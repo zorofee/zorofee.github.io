@@ -226,8 +226,8 @@ void main() {
 
     // RMO map packed as rgb = [roughness, metallic, occlusion]
     vec4 rmaSample = texture(tRMO, vUv);
-    float roughness = clamp(rmaSample.r * uRoughness, 0.04, 1.0);
-    float metallic = clamp(rmaSample.g * uMetallic, 0.04, 1.0);
+    float roughness = 0.0;//clamp(rmaSample.r * uRoughness, 0.04, 1.0);
+    float metallic = 1.0;//clamp(rmaSample.g * uMetallic, 0.04, 1.0);
 
     vec3 f0 = vec3(0.04);
     vec3 diffuseColor = baseColor * (vec3(1.0) - f0) * (1.0 - metallic);
