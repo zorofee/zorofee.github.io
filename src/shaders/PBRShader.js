@@ -270,7 +270,7 @@ void main() {
     color = mix(color, color * rmaSample.b, uOcclusion);
 
     // Convert to sRGB to display
-    FragColor.rgb = texture(tNormal,vUv).xyz;//linearToSRGB(color);
+    FragColor.rgb = vec3(1.0,0.0,0.0);//texture(tNormal,vUv).xyz;//linearToSRGB(color);
     FragColor.a = 1.0;
 }
 `;
