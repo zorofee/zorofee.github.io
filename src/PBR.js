@@ -57,7 +57,7 @@ const program = new Program(gl, {
         uMetallic: { value: 1 },
         uOcclusion: { value: 1 },
 
-        tNormal: { value: getTexture('src/assets/materials/hammered-metal-normal.jpg') },
+        tNormal: { value: getTexture('src/assets/materials/normal.png') },
         uNormalScale: { value: 2 },
         uNormalUVScale: { value: 3 },
 
