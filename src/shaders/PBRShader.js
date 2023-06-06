@@ -273,7 +273,7 @@ void main() {
     // Multiply occlusion
     color = mix(color, color * rmaSample.b, uOcclusion);
 
-    // Convert to sRGB to display
+    // Convert to sRGB to display //
     FragColor.rgb = vec3(vUv,0.0);//linearToSRGB(color);
     FragColor.a = 1.0;
 }
