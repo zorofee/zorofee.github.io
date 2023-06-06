@@ -236,7 +236,7 @@ void main() {
     vec3 specularEnvR0 = specularColor;
     vec3 specularEnvR90 = vec3(clamp(max(max(specularColor.r, specularColor.g), specularColor.b) * 25.0, 0.0, 1.0));
 
-    vec3 N = getNormal();
+    vec3 N = normalize(vNormal);//getNormal();
     vec3 V = normalize(cameraPosition - vMPos);
     vec3 L = normalize(uLightDirection);
     vec3 H = normalize(L + V);
