@@ -13,7 +13,7 @@
 
 Use this to convert different environment maps into the required formats for use in a PBR render.
 
-[Link here](https://oframe.github.io/ibl-converter/)
+[Link here](https://zorofee.github.io/)
 
 ## Overview
 
