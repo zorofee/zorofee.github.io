@@ -66,6 +66,9 @@ const float LN2 = 0.6931472;
 
 const float ENV_LODS = 6.0;
 
+vec2 g_uv0;
+vec2 g_uv1;
+
 vec4 SRGBtoLinear(vec4 srgb) {
     vec3 linOut = pow(srgb.xyz, vec3(2.2));
     return vec4(linOut, srgb.w);
@@ -209,7 +212,8 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     specular0 = mix(specular0, RGBDToLinear(texture(tEnvSpecular, uv0)).rgb, mixRGBD);
     specular1 = mix(specular1, RGBDToLinear(texture(tEnvSpecular, uv1)).rgb, mixRGBD);
 
-
+    g_uv0 = uv0;
+    g_uv1 = uv1;
     
     vec3 specularLight = mix(specular0, specular1, blend);
 
@@ -270,7 +274,7 @@ void main() {
     color = mix(color, color * rmaSample.b, uOcclusion);
 
     // Convert to sRGB to display
-    FragColor.rgb = vec3(1.0,0.0,0.0);//texture(tNormal,vUv).xyz;//linearToSRGB(color);
+    FragColor.rgb = texture(tNormal,g_uv0).xyz;//linearToSRGB(color);
     FragColor.a = 1.0;
 }
 `;
