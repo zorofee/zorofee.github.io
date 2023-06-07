@@ -137,7 +137,7 @@ export function updateIBL(specularData, diffuseData, inputType) {
     bgProgram.uniforms.tMap.value = diffuse;
     bgProgram.uniforms.uInputType.value = inputType;
 
-    program.uniforms.tEnvDiffuse.value = diffuse;
-    program.uniforms.tEnvSpecular.value = specular;
+    //program.uniforms.tEnvDiffuse.value = diffuse;
+    //program.uniforms.tEnvSpecular.value = specular;
     program.uniforms.uInputType.value = inputType;
 }
