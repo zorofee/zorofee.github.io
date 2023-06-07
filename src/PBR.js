@@ -84,7 +84,7 @@ async function loadShaderBall() {
     //    normal: { size: 3, data: new Float32Array(data.normal) },
     //});
 
-    const geometry = new Sphere(gl, 1.0, 64);
+    const geometry = new Sphere(gl, 0.5, 64);
 
     const mesh = new Mesh(gl, { geometry, program });
 
