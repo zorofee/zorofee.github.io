@@ -17,7 +17,7 @@ out vec3 vMPos;
 
 void main() {
     vUv = uv;
-    vNormal = normalize(normalMatrix * normal);
+    vNormal = normal;//normalize(normalMatrix * normal);
     vec4 mPos = modelMatrix * vec4(position, 1.0);
     vMPos = position;//mPos.xyz / mPos.w;
 
