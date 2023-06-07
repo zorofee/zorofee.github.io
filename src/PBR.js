@@ -76,15 +76,15 @@ const program = new Program(gl, {
 
 loadShaderBall();
 async function loadShaderBall() {
-    //const data = await (await fetch(`src/assets/shaderball.json`)).json();
+    const data = await (await fetch(`src/assets/shaderball.json`)).json();
 
-    //const geometry = new Geometry(gl, {
-    //    position: { size: 3, data: new Float32Array(data.position) },
-    //    uv: { size: 2, data: new Float32Array(data.uv) },
-    //    normal: { size: 3, data: new Float32Array(data.normal) },
-    //});
+    const geometry = new Geometry(gl, {
+        position: { size: 3, data: new Float32Array(data.position) },
+        uv: { size: 2, data: new Float32Array(data.uv) },
+        normal: { size: 3, data: new Float32Array(data.normal) },
+    });
 
-    const geometry = new Sphere(gl, 0.5, 64);
+    //const geometry = new Sphere(gl, 0.5, 64);
 
     const mesh = new Mesh(gl, { geometry, program });
 
