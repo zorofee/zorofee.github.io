@@ -167,24 +167,24 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     
 
     // sRGB == 0
-    diffuseLight = SRGBtoLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
+    //diffuseLight = SRGBtoLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
     specular0 = SRGBtoLinear(texture(tEnvSpecular, uv0)).rgb;
     specular1 = SRGBtoLinear(texture(tEnvSpecular, uv1)).rgb;
         
     // RGBE == 1
     float mixRGBE = clamp(1.0 - abs(uInputType - 1.0), 0.0, 1.0);
-    diffuseLight = mix(diffuseLight, RGBEToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBE);
+    //diffuseLight = mix(diffuseLight, RGBEToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBE);
     specular0 = mix(specular0, RGBEToLinear(texture(tEnvSpecular, uv0)).rgb, mixRGBE);
     specular1 = mix(specular1, RGBEToLinear(texture(tEnvSpecular, uv1)).rgb, mixRGBE);
 
     // RGBM == 2
     float mixRGBM = clamp(1.0 - abs(uInputType - 2.0), 0.0, 1.0);
-    diffuseLight = mix(diffuseLight, RGBMToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBM);
+    //diffuseLight = mix(diffuseLight, RGBMToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBM);
     specular0 = mix(specular0, RGBMToLinear(texture(tEnvSpecular, uv0)).rgb, mixRGBM);
     specular1 = mix(specular1, RGBMToLinear(texture(tEnvSpecular, uv1)).rgb, mixRGBM);
         
 
-    
+
     specular = texture(tEnvSpecular, uv0).rgb;
     return;
 
