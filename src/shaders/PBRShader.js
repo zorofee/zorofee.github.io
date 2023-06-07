@@ -274,7 +274,7 @@ void main() {
     color = mix(color, color * rmaSample.b, uOcclusion);
 
     // Convert to sRGB to display //
-    FragColor.rgb = linearToSRGB(color);//reflection;/////
+    FragColor.rgb = reflection;//linearToSRGB(color);//reflection;/////
     FragColor.a = 1.0;
 }
 `;
