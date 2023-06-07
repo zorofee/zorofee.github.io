@@ -147,9 +147,6 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     // Sample the specular env map atlas depending on the roughness value
     vec2 uvSpec = cartesianToPolar(reflection);
     
-    specular = vec3(uvSpec,0.0);
-    return;
-    
     
     uvSpec.y /= 2.0;
     
@@ -159,6 +156,10 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     uv0 /= pow(2.0, level0);
     uv0.y += 1.0 - exp(-LN2 * level0);
     
+    specular = vec3(uv0,0.0);
+    return;
+    
+
     uv1 /= pow(2.0, level1);
     uv1.y += 1.0 - exp(-LN2 * level1);
 
