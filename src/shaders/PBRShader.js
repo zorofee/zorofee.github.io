@@ -156,9 +156,7 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     uv0 /= pow(2.0, level0);
     uv0.y += 1.0 - exp(-LN2 * level0);
     
-    specular = vec3(uv0,0.0);
-    return;
-    
+  
 
     uv1 /= pow(2.0, level1);
     uv1.y += 1.0 - exp(-LN2 * level1);
@@ -167,33 +165,6 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     vec3 specular0;
     vec3 specular1;
     
-    // 'If else' statements caused the strangest gpu bug
-    // if (uInputType < 0.5) {
-    //    
-    //     // sRGB == 0
-    //     diffuseLight = SRGBToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
-    //     specular0 = SRGBToLinear(texture(tEnvSpecular, uv0)).rgb;
-    //     specular1 = SRGBToLinear(texture(tEnvSpecular, uv1)).rgb;
-    // } else if (uInputType < 1.5) {
-    //    
-    //     // RGBE == 1
-    //     diffuseLight = RGBEToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
-    //     specular0 = RGBEToLinear(texture(tEnvSpecular, uv0)).rgb;
-    //     specular1 = RGBEToLinear(texture(tEnvSpecular, uv1)).rgb;
-    // } else if (uInputType < 2.5) {
-    //    
-    //     // RGBM == 2
-    //     diffuseLight = RGBMToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
-    //     specular0 = RGBMToLinear(texture(tEnvSpecular, uv0)).rgb;
-    //     specular1 = RGBMToLinear(texture(tEnvSpecular, uv1)).rgb;
-    // } else if (uInputType < 3.5) {
-    //    
-    //     // RGBD == 3
-    //     diffuseLight = RGBDToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
-    //     specular0 = RGBDToLinear(texture(tEnvSpecular, uv0)).rgb;
-    //     specular1 = RGBDToLinear(texture(tEnvSpecular, uv1)).rgb;
-    // }
-
 
     // sRGB == 0
     diffuseLight = SRGBtoLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
@@ -212,6 +183,12 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     specular0 = mix(specular0, RGBMToLinear(texture(tEnvSpecular, uv0)).rgb, mixRGBM);
     specular1 = mix(specular1, RGBMToLinear(texture(tEnvSpecular, uv1)).rgb, mixRGBM);
         
+
+
+    specular = specular0;
+    return;
+
+
     // RGBD == 3
     float mixRGBD = clamp(1.0 - abs(uInputType - 3.0), 0.0, 1.0);
     diffuseLight = mix(diffuseLight, RGBDToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBD);
