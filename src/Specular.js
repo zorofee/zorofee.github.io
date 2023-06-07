@@ -57,7 +57,7 @@ export function renderSpecular(data) {
     });
 
     let size = OUTPUT_SIZE;
-    let num = 6; // Don't see why you'd want more than that
+    let num = 2; // Don't see why you'd want more than that
     // let num = Math.log(size) / Math.log(2) - 2;
 
     // Create RenderTargets for each roughness level
