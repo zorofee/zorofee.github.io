@@ -146,6 +146,11 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     
     // Sample the specular env map atlas depending on the roughness value
     vec2 uvSpec = cartesianToPolar(reflection);
+    
+    specular = vec3(uvSpec,0.0);
+    return;
+    
+    
     uvSpec.y /= 2.0;
     
     vec2 uv0 = uvSpec;
@@ -274,7 +279,7 @@ void main() {
     color = mix(color, color * rmaSample.b, uOcclusion);
 
     // Convert to sRGB to display //
-    FragColor.rgb = reflection;//linearToSRGB(color);//reflection;/////
+    FragColor.rgb = specularIBL;//linearToSRGB(color);//reflection;/////
     FragColor.a = 1.0;
 }
 `;
