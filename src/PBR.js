@@ -57,14 +57,14 @@ const program = new Program(gl, {
         uMetallic: { value: 1 },
         uOcclusion: { value: 1 },
 
-        tNormal: { value: getTexture('src/assets/materials/awesomeface.png') },
+        tEnvSpecular: { value: getTexture('src/assets/materials/awesomeface.png') },
         uNormalScale: { value: 2 },
         uNormalUVScale: { value: 3 },
 
         tLUT: { value: getTexture('src/assets/lut.png', false) },
 
         tEnvDiffuse: { value: getTexture('src/assets/interior-diffuse-RGBM.png', false) },
-        tEnvSpecular: { value: getTexture('src/assets/interior-specular-RGBM.png', false) },
+        tNormal: { value: getTexture('src/assets/interior-specular-RGBM.png', false) },
         uEnvSpecular: { value: 1.0 },
 
         uInputType: { value: 2 },
