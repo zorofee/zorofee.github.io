@@ -184,8 +184,8 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     specular1 = mix(specular1, RGBMToLinear(texture(tEnvSpecular, uv1)).rgb, mixRGBM);
         
 
-
-    specular = specular0;
+    
+    specular = texture(tEnvSpecular, uv0).rgb;
     return;
 
 
