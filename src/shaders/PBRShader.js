@@ -18,7 +18,7 @@ out vec3 vMPos;
 void main() {
     vUv = vec2(0,0);//uv;
     vNormal = normal;//normalize(normalMatrix * normal);
-    vec4 mPos = modelMatrix * vec4(position, 1.0);
+    //vec4 mPos = modelMatrix * vec4(position, 1.0);
     vMPos = position;//mPos.xyz / mPos.w;
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -274,7 +274,7 @@ void main() {
     color = mix(color, color * rmaSample.b, uOcclusion);
 
     // Convert to sRGB to display //
-    FragColor.rgb = linearToSRGB(color);//reflection;/////
+    FragColor.rgb = N;//linearToSRGB(color);//reflection;/////
     FragColor.a = 1.0;
 }
 `;
