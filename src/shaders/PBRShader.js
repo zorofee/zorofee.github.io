@@ -16,10 +16,10 @@ out vec3 vNormal;
 out vec3 vMPos;
 
 void main() {
-    vUv = vec2(0,0);//uv;
-    vNormal = normal;//normalize(normalMatrix * normal);
-    //vec4 mPos = modelMatrix * vec4(position, 1.0);
-    vMPos = position;//mPos.xyz / mPos.w;
+    vUv = uv;
+    vNormal = normalize(normalMatrix * normal);
+    vec4 mPos = modelMatrix * vec4(position, 1.0);
+    vMPos = mPos.xyz / mPos.w;
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
@@ -65,9 +65,6 @@ const float RECIPROCAL_PI2 = 0.15915494;
 const float LN2 = 0.6931472;
 
 const float ENV_LODS = 6.0;
-
-vec2 g_uv0;
-vec2 g_uv1;
 
 vec4 SRGBtoLinear(vec4 srgb) {
     vec3 linOut = pow(srgb.xyz, vec3(2.2));
@@ -146,8 +143,6 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     
     // Sample the specular env map atlas depending on the roughness value
     vec2 uvSpec = cartesianToPolar(reflection);
-    
-    
     uvSpec.y /= 2.0;
     
     vec2 uv0 = uvSpec;
@@ -156,8 +151,6 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     uv0 /= pow(2.0, level0);
     uv0.y += 1.0 - exp(-LN2 * level0);
     
-  
-
     uv1 /= pow(2.0, level1);
     uv1.y += 1.0 - exp(-LN2 * level1);
 
@@ -165,38 +158,58 @@ void getIBLContribution(inout vec3 diffuse, inout vec3 specular, float NdV, floa
     vec3 specular0;
     vec3 specular1;
     
+    // 'If else' statements caused the strangest gpu bug
+    // if (uInputType < 0.5) {
+    //    
+    //     // sRGB == 0
+    //     diffuseLight = SRGBToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
+    //     specular0 = SRGBToLinear(texture(tEnvSpecular, uv0)).rgb;
+    //     specular1 = SRGBToLinear(texture(tEnvSpecular, uv1)).rgb;
+    // } else if (uInputType < 1.5) {
+    //    
+    //     // RGBE == 1
+    //     diffuseLight = RGBEToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
+    //     specular0 = RGBEToLinear(texture(tEnvSpecular, uv0)).rgb;
+    //     specular1 = RGBEToLinear(texture(tEnvSpecular, uv1)).rgb;
+    // } else if (uInputType < 2.5) {
+    //    
+    //     // RGBM == 2
+    //     diffuseLight = RGBMToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
+    //     specular0 = RGBMToLinear(texture(tEnvSpecular, uv0)).rgb;
+    //     specular1 = RGBMToLinear(texture(tEnvSpecular, uv1)).rgb;
+    // } else if (uInputType < 3.5) {
+    //    
+    //     // RGBD == 3
+    //     diffuseLight = RGBDToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
+    //     specular0 = RGBDToLinear(texture(tEnvSpecular, uv0)).rgb;
+    //     specular1 = RGBDToLinear(texture(tEnvSpecular, uv1)).rgb;
+    // }
+
 
     // sRGB == 0
-    //diffuseLight = SRGBtoLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
+    diffuseLight = SRGBtoLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb;
     specular0 = SRGBtoLinear(texture(tEnvSpecular, uv0)).rgb;
     specular1 = SRGBtoLinear(texture(tEnvSpecular, uv1)).rgb;
         
     // RGBE == 1
     float mixRGBE = clamp(1.0 - abs(uInputType - 1.0), 0.0, 1.0);
-    //diffuseLight = mix(diffuseLight, RGBEToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBE);
+    diffuseLight = mix(diffuseLight, RGBEToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBE);
     specular0 = mix(specular0, RGBEToLinear(texture(tEnvSpecular, uv0)).rgb, mixRGBE);
     specular1 = mix(specular1, RGBEToLinear(texture(tEnvSpecular, uv1)).rgb, mixRGBE);
 
     // RGBM == 2
     float mixRGBM = clamp(1.0 - abs(uInputType - 2.0), 0.0, 1.0);
-    //diffuseLight = mix(diffuseLight, RGBMToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBM);
+    diffuseLight = mix(diffuseLight, RGBMToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBM);
     specular0 = mix(specular0, RGBMToLinear(texture(tEnvSpecular, uv0)).rgb, mixRGBM);
     specular1 = mix(specular1, RGBMToLinear(texture(tEnvSpecular, uv1)).rgb, mixRGBM);
         
-
-
-    specular = texture(tEnvSpecular, uv0).rgb;
-    return;
-
-
     // RGBD == 3
     float mixRGBD = clamp(1.0 - abs(uInputType - 3.0), 0.0, 1.0);
     diffuseLight = mix(diffuseLight, RGBDToLinear(texture(tEnvDiffuse, cartesianToPolar(n))).rgb, mixRGBD);
     specular0 = mix(specular0, RGBDToLinear(texture(tEnvSpecular, uv0)).rgb, mixRGBD);
     specular1 = mix(specular1, RGBDToLinear(texture(tEnvSpecular, uv1)).rgb, mixRGBD);
 
-    g_uv0 = uv0;
-    g_uv1 = uv1;
+
     
     vec3 specularLight = mix(specular0, specular1, blend);
 
@@ -213,8 +226,8 @@ void main() {
 
     // RMO map packed as rgb = [roughness, metallic, occlusion]
     vec4 rmaSample = texture(tRMO, vUv);
-    float roughness = 0.0;//clamp(rmaSample.r * uRoughness, 0.04, 1.0);
-    float metallic = 1.0;//clamp(rmaSample.g * uMetallic, 0.04, 1.0);
+    float roughness = clamp(rmaSample.r * uRoughness, 0.04, 1.0);
+    float metallic = clamp(rmaSample.g * uMetallic, 0.04, 1.0);
 
     vec3 f0 = vec3(0.04);
     vec3 diffuseColor = baseColor * (vec3(1.0) - f0) * (1.0 - metallic);
@@ -223,8 +236,8 @@ void main() {
     vec3 specularEnvR0 = specularColor;
     vec3 specularEnvR90 = vec3(clamp(max(max(specularColor.r, specularColor.g), specularColor.b) * 25.0, 0.0, 1.0));
 
-    vec3 N = normalize(vNormal);//getNormal();
-    vec3 V = normalize(cameraPosition);
+    vec3 N = getNormal();
+    vec3 V = normalize(cameraPosition - vMPos);
     vec3 L = normalize(uLightDirection);
     vec3 H = normalize(L + V);
     vec3 reflection = normalize(reflect(-V, N));
@@ -256,8 +269,8 @@ void main() {
     // Multiply occlusion
     color = mix(color, color * rmaSample.b, uOcclusion);
 
-    // Convert to sRGB to display //
-    FragColor.rgb = specularIBL;//linearToSRGB(color);//reflection;/////
+    // Convert to sRGB to display
+    FragColor.rgb = linearToSRGB(color);
     FragColor.a = 1.0;
 }
 `;

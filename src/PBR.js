@@ -57,14 +57,14 @@ const program = new Program(gl, {
         uMetallic: { value: 1 },
         uOcclusion: { value: 1 },
 
-        tEnvSpecular: { value: getTexture('src/assets/materials/awesomeface.png') },
+        tNormal: { value: getTexture('src/assets/materials/hammered-metal-normal.jpg') },
         uNormalScale: { value: 2 },
         uNormalUVScale: { value: 3 },
 
         tLUT: { value: getTexture('src/assets/lut.png', false) },
 
         tEnvDiffuse: { value: getTexture('src/assets/interior-diffuse-RGBM.png', false) },
-        tNormal: { value: getTexture('src/assets/interior-specular-RGBM.png', false) },
+        tEnvSpecular: { value: getTexture('src/assets/interior-specular-RGBM.png', false) },
         uEnvSpecular: { value: 1.0 },
 
         uInputType: { value: 2 },
@@ -84,10 +84,8 @@ async function loadShaderBall() {
         normal: { size: 3, data: new Float32Array(data.normal) },
     });
 
-    //const geometry = new Sphere(gl, 0.5, 64);
-
     const mesh = new Mesh(gl, { geometry, program });
-
+    mesh.position.y = -0.5;
     mesh.setParent(scene);
 }
 
@@ -137,7 +135,7 @@ export function updateIBL(specularData, diffuseData, inputType) {
     bgProgram.uniforms.tMap.value = diffuse;
     bgProgram.uniforms.uInputType.value = inputType;
 
-    //program.uniforms.tEnvDiffuse.value = diffuse;
-    //program.uniforms.tEnvSpecular.value = specular;
+    program.uniforms.tEnvDiffuse.value = diffuse;
+    program.uniforms.tEnvSpecular.value = specular;
     program.uniforms.uInputType.value = inputType;
 }
